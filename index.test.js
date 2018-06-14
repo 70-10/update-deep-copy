@@ -14,6 +14,11 @@ test("no-update is clone deep", t => {
   t.deepEqual(result, object);
 });
 
+test("add key-value", t => {
+  const state = { a: "a" };
+  t.deepEqual(update(state, { b: "b" }), { a: "a", b: "b" });
+});
+
 test("update no exists key", t => {
   const object = {
     a: 1,
