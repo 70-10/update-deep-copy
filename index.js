@@ -9,7 +9,15 @@ module.exports = (object, update) => {
 
   const updateKeys = Object.keys(update);
   for (key of updateKeys) {
-    o[key] = clone(update[key]);
+    const item = update[key];
+    if (typeof item === "object") {
+      const itemKeys = Object.keys(item);
+      for (itemKey of itemKeys) {
+        o[key][itemKey] = item[itemKey];
+      }
+    } else {
+      o[key] = clone(update[key]);
+    }
   }
 
   return o;
