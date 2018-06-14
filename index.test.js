@@ -79,3 +79,16 @@ test("update - store state at redux", t => {
     user: { name: { first: "hanako", last: "yamada" } }
   });
 });
+
+test("Update nested object", t => {
+  const state = {
+    user: {
+      name: "alex",
+      age: 20
+    }
+  };
+
+  const result = update(state, { user: { age: 21 } });
+
+  t.deepEqual(result, { user: { name: "alex", age: 21 } });
+});
