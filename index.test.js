@@ -92,3 +92,61 @@ test("Update nested object", t => {
 
   t.deepEqual(result, { user: { name: "alex", age: 21 } });
 });
+
+test("Update array", t => {
+  const state = [1, 2, 3, 4];
+
+  t.deepEqual(update(state, [2, 3, 4, 5]), [2, 3, 4, 5]);
+});
+
+test("add nested array", t => {
+  const state = {
+    name: "users",
+    list: [
+      {
+        name: "alex",
+        age: 21
+      },
+      {
+        name: "Ann",
+        age: 30
+      }
+    ]
+  };
+
+  t.deepEqual(
+    update(state, {
+      list: [{ name: "Joe", age: 18 }, { name: "alex", age: 22 }]
+    }),
+    {
+      name: "users",
+      list: [{ name: "Joe", age: 18 }, { name: "alex", age: 22 }]
+    }
+  );
+});
+
+test("Update nested array", t => {
+  const state = {
+    name: "users",
+    list: [
+      {
+        name: "alex",
+        age: 21
+      },
+      {
+        name: "Ann",
+        age: 30
+      }
+    ]
+  };
+
+  t.deepEqual(
+    update(state, {
+      list: [{ name: "alex", age: 22 }]
+    }),
+    {
+      name: "users",
+      list: [{ name: "alex", age: 22 }]
+    }
+  );
+});
