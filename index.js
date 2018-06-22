@@ -7,6 +7,10 @@ module.exports = (object, changeSet) => {
 
 function update(obj, changeSet) {
   return Object.keys(changeSet).reduce((state, key) => {
+    if (!changeSet[key]) {
+      state[key] = changeSet[key];
+      return state;
+    }
     state[key] =
       typeof changeSet[key] === "object" && !Array.isArray(changeSet[key])
         ? update(state[key], changeSet[key])

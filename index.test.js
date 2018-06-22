@@ -1,5 +1,5 @@
 import test from "ava";
-import update from "./";
+import update from "./index";
 
 test("no-update is clone deep", t => {
   const object = {
@@ -149,4 +149,19 @@ test("Update nested array", t => {
       list: [{ name: "alex", age: 22 }]
     }
   );
+});
+
+test("update undefiened", t => {
+  const state = { a: 1, b: undefined };
+  t.deepEqual(update(state, { b: 2 }), { a: 1, b: 2 });
+});
+
+test("update to undefiened", t => {
+  const state = { a: 1, b: 2 };
+  t.deepEqual(update(state, { b: undefined }), { a: 1, b: undefined });
+});
+
+test("update to null", t => {
+  const state = { a: 1, b: 2 };
+  t.deepEqual(update(state, { b: null }), { a: 1, b: null });
 });
