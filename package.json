@@ -6,7 +6,7 @@
   "scripts": {
     "test": "ava",
     "build": "babel index.js --out-dir dist",
-    "prepublish": "npm run build"
+    "prepare": "npm run build"
   },
   "repository": "70-10/update-deep-copy",
   "keywords": [
