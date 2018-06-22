@@ -2,9 +2,11 @@
   "name": "update-deep-copy",
   "version": "0.2.2",
   "description": "Deep copy and update object",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
-    "test": "ava"
+    "test": "ava",
+    "build": "babel index.js --out-dir dist",
+    "prepublish": "npm run build"
   },
   "repository": "70-10/update-deep-copy",
   "keywords": [
@@ -16,6 +18,8 @@
     "lodash.clonedeep": "^4.5.0"
   },
   "devDependencies": {
-    "ava": "^1.0.0-beta.6"
+    "ava": "^1.0.0-beta.6",
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0"
   }
 }
