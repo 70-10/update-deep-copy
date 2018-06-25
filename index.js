@@ -6,15 +6,22 @@ module.exports = (object, changeSet) => {
 };
 
 function update(obj, changeSet) {
-  return Object.keys(changeSet).reduce((state, key) => {
-    if (!changeSet[key]) {
-      state[key] = changeSet[key];
+  const updateReduce = (state, key) => {
+    const change = changeSet[key];
+
+    if (!change) {
+      state[key] = change;
       return state;
     }
-    state[key] =
-      typeof changeSet[key] === "object" && !Array.isArray(changeSet[key])
-        ? update(state[key], changeSet[key])
-        : clone(changeSet[key]);
+
+    if (typeof change === "object" && !Array.isArray(change)) {
+      state[key] = update(state[key], change);
+      return state;
+    }
+
+    state[key] = clone(change);
     return state;
-  }, obj);
+  };
+
+  return Object.keys(changeSet).reduce(updateReduce, obj);
 }
