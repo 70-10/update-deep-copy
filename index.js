@@ -23,5 +23,5 @@ function update(obj, changeSet) {
     return state;
   };
 
-  return Object.keys(changeSet).reduce(updateReduce, obj);
+  return Object.keys(changeSet).reduce(updateReduce, obj || {});
 }

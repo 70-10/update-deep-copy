@@ -165,3 +165,15 @@ test("update to null", t => {
   const state = { a: 1, b: 2 };
   t.deepEqual(update(state, { b: null }), { a: 1, b: null });
 });
+
+test("state is empty object", t => {
+  const state = {};
+  t.deepEqual(update(state, { a: { b: "" } }), {
+    a: { b: "" }
+  });
+});
+
+test("state is no exists", t => {
+  const state = { a: 1 };
+  t.deepEqual(update(state, { b: { c: 2 } }), { a: 1, b: { c: 2 } });
+});
