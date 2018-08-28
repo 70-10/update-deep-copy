@@ -14,6 +14,24 @@ test("no-update is clone deep", t => {
   t.deepEqual(result, object);
 });
 
+test("no-update is clone deep for Array", t => {
+  const object = [
+    {
+      a: 1,
+      b: ["test"],
+      c: { test: "test" }
+    }
+  ];
+
+  const result = update(object);
+
+  t.not(result, object);
+  t.is(result[0].a, object[0].a);
+  t.not(result[0].b, object[0].b);
+  t.not(result[0].c, object[0].c);
+  t.deepEqual(result, object);
+});
+
 test("add key-value", t => {
   const state = { a: "a" };
   t.deepEqual(update(state, { b: "b" }), { a: "a", b: "b" });
