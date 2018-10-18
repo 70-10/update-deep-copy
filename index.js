@@ -9,11 +9,12 @@ function update(obj, changeSet) {
   const updateReduce = (state, key) => {
     const change = changeSet[key];
 
+    if (typeof change === "undefined") {
+      delete state[key];
+      return state;
+    }
+
     if (!change) {
-      if (typeof change === "undefined") {
-        delete state[key];
-        return state;
-      }
       state[key] = change;
       return state;
     }
