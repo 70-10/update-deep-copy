@@ -169,14 +169,19 @@ test("Update nested array", t => {
   );
 });
 
-test("update undefiened", t => {
+test("update from undefiened", t => {
   const state = { a: 1, b: undefined };
   t.deepEqual(update(state, { b: 2 }), { a: 1, b: 2 });
 });
 
 test("update to undefiened", t => {
   const state = { a: 1, b: 2 };
-  t.deepEqual(update(state, { b: undefined }), { a: 1, b: undefined });
+  t.deepEqual(update(state, { b: undefined }), { a: 1 });
+});
+
+test("update from null", t => {
+  const state = { a: 1, b: null };
+  t.deepEqual(update(state, { b: 2 }), { a: 1, b: 2 });
 });
 
 test("update to null", t => {

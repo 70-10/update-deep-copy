@@ -10,6 +10,10 @@ function update(obj, changeSet) {
     const change = changeSet[key];
 
     if (!change) {
+      if (typeof change === "undefined") {
+        delete state[key];
+        return state;
+      }
       state[key] = change;
       return state;
     }
