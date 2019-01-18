@@ -1,7 +1,6 @@
-import test from "ava";
-import update from "./index";
+const update = require(".");
 
-test("no-update is clone deep", t => {
+test("no-update is clone deep", () => {
   const object = {
     a: 1,
     b: ["test"],
@@ -9,12 +8,11 @@ test("no-update is clone deep", t => {
   };
 
   const result = update(object);
-
-  t.not(result, object);
-  t.deepEqual(result, object);
+  expect(result).not.toBe(object);
+  expect(result).toEqual(object);
 });
 
-test("no-update is clone deep for Array", t => {
+test("no-update is clone deep for Array", () => {
   const object = [
     {
       a: 1,
@@ -25,28 +23,26 @@ test("no-update is clone deep for Array", t => {
 
   const result = update(object);
 
-  t.not(result, object);
-  t.is(result[0].a, object[0].a);
-  t.not(result[0].b, object[0].b);
-  t.not(result[0].c, object[0].c);
-  t.deepEqual(result, object);
+  expect(result).not.toBe(object);
+  expect(result[0].a).toBe(object[0].a);
+  expect(result[0].b).not.toBe(object[0].b);
+  expect(result[0].c).not.toBe(object[0].c);
+  expect(result).toEqual(object);
 });
 
-test("add key-value", t => {
+test("add key-value", () => {
   const state = { a: "a" };
-  t.deepEqual(update(state, { b: "b" }), { a: "a", b: "b" });
+  expect(update(state, { b: "b" })).toEqual({ a: "a", b: "b" });
 });
 
-test("update no exists key", t => {
+test("update no exists key", () => {
   const object = {
     a: 1,
     b: ["test"],
     c: { test: "test" }
   };
 
-  const result = update(object, { d: "fuga" });
-
-  t.deepEqual(result, {
+  expect(update(object, { d: "fuga" })).toEqual({
     a: 1,
     b: ["test"],
     c: { test: "test" },
@@ -54,23 +50,21 @@ test("update no exists key", t => {
   });
 });
 
-test("update exists key", t => {
+test("update exists key", () => {
   const object = {
     a: 1,
     b: ["test"],
     c: { test: "test" }
   };
 
-  const result = update(object, { b: ["test", "fuga"] });
-
-  t.deepEqual(result, {
+  expect(update(object, { b: ["test", "fuga"] })).toEqual({
     a: 1,
     b: ["test", "fuga"],
     c: { test: "test" }
   });
 });
 
-test("update - store state at redux", t => {
+test("update - store state at redux", () => {
   const state = {
     user: {
       name: {
@@ -89,16 +83,16 @@ test("update - store state at redux", t => {
     }
   };
 
-  const result = update(state, {
-    user: { name: action.edit.name }
-  });
-
-  t.deepEqual(result, {
+  expect(
+    update(state, {
+      user: { name: action.edit.name }
+    })
+  ).toEqual({
     user: { name: { first: "hanako", last: "yamada" } }
   });
 });
 
-test("Update nested object", t => {
+test("Update nested object", () => {
   const state = {
     user: {
       name: "alex",
@@ -106,18 +100,18 @@ test("Update nested object", t => {
     }
   };
 
-  const result = update(state, { user: { age: 21 } });
-
-  t.deepEqual(result, { user: { name: "alex", age: 21 } });
+  expect(update(state, { user: { age: 21 } })).toEqual({
+    user: { name: "alex", age: 21 }
+  });
 });
 
-test("Update array", t => {
+test("Update array", () => {
   const state = [1, 2, 3, 4];
 
-  t.deepEqual(update(state, [2, 3, 4, 5]), [2, 3, 4, 5]);
+  expect(update(state, [2, 3, 4, 5])).toEqual([2, 3, 4, 5]);
 });
 
-test("add nested array", t => {
+test("add nested array", () => {
   const state = {
     name: "users",
     list: [
@@ -132,18 +126,17 @@ test("add nested array", t => {
     ]
   };
 
-  t.deepEqual(
+  expect(
     update(state, {
       list: [{ name: "Joe", age: 18 }, { name: "alex", age: 22 }]
-    }),
-    {
-      name: "users",
-      list: [{ name: "Joe", age: 18 }, { name: "alex", age: 22 }]
-    }
-  );
+    })
+  ).toEqual({
+    name: "users",
+    list: [{ name: "Joe", age: 18 }, { name: "alex", age: 22 }]
+  });
 });
 
-test("Update nested array", t => {
+test("Update nested array", () => {
   const state = {
     name: "users",
     list: [
@@ -158,45 +151,44 @@ test("Update nested array", t => {
     ]
   };
 
-  t.deepEqual(
+  expect(
     update(state, {
       list: [{ name: "alex", age: 22 }]
-    }),
-    {
-      name: "users",
-      list: [{ name: "alex", age: 22 }]
-    }
-  );
+    })
+  ).toEqual({
+    name: "users",
+    list: [{ name: "alex", age: 22 }]
+  });
 });
 
-test("update from undefiened", t => {
+test("update from undefiened", () => {
   const state = { a: 1, b: undefined };
-  t.deepEqual(update(state, { b: 2 }), { a: 1, b: 2 });
+  expect(update(state, { b: 2 })).toEqual({ a: 1, b: 2 });
 });
 
-test("update to undefiened", t => {
+test("update to undefiened", () => {
   const state = { a: 1, b: 2 };
-  t.deepEqual(update(state, { b: undefined }), { a: 1 });
+  expect(update(state, { b: undefined })).toEqual({ a: 1 });
 });
 
-test("update from null", t => {
+test("update from null", () => {
   const state = { a: 1, b: null };
-  t.deepEqual(update(state, { b: 2 }), { a: 1, b: 2 });
+  expect(update(state, { b: 2 })).toEqual({ a: 1, b: 2 });
 });
 
-test("update to null", t => {
+test("update to null", () => {
   const state = { a: 1, b: 2 };
-  t.deepEqual(update(state, { b: null }), { a: 1, b: null });
+  expect(update(state, { b: null })).toEqual({ a: 1, b: null });
 });
 
-test("state is empty object", t => {
+test("state is empty object", () => {
   const state = {};
-  t.deepEqual(update(state, { a: { b: "" } }), {
+  expect(update(state, { a: { b: "" } })).toEqual({
     a: { b: "" }
   });
 });
 
-test("state is no exists", t => {
+test("state is no exists", () => {
   const state = { a: 1 };
-  t.deepEqual(update(state, { b: { c: 2 } }), { a: 1, b: { c: 2 } });
+  expect(update(state, { b: { c: 2 } })).toEqual({ a: 1, b: { c: 2 } });
 });
