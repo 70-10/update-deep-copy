@@ -1,6 +1,6 @@
 {
   "name": "update-deep-copy",
-  "version": "0.4.0",
+  "version": "0.4.1",
   "description": "Deep copy and update object",
   "main": "dist/index.js",
   "scripts": {
